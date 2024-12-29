@@ -19,7 +19,7 @@ const Alllistings: React.FC<PropertyPageProps> = ({ properties }) => {
 
   return (
     <section
-      className={`max-w-screen-xl px-4 bg-white ${properties.length > 0 ? "md:py-20 py-20 mt-10" : "flex items-center justify-center min-h-96"}`}
+      className={`max-w-screen-xl px-4 bg-white ${properties.length > 0 ? "md:py-20 py-16 " : "flex items-center justify-center min-h-96"}`}
     >
       {properties.length > 0 ? (
         <div className="container mx-auto lg:w-11/12">

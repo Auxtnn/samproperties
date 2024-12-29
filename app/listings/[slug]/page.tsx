@@ -4,6 +4,8 @@ import {
   AgentContact,
 } from "../../components/IndividualListing";
 import { getPropertyBySlug } from "@/sanity/lib/query";
+import ShareButtons from "@/app/components/ShareButtonBlog";
+import { FiClock, FiInbox, FiMapPin, FiHome } from "react-icons/fi";
 
 export default async function PropertyPage({
   params,
@@ -11,6 +13,14 @@ export default async function PropertyPage({
   params: { slug: string };
 }) {
   const property = await getPropertyBySlug(params.slug);
+
+  if (!property) {
+    return <div className="text-center">Property not found</div>;
+  }
+
+  const postUrl = `samchukwuproperties.com/listings/${property.currentSlug}`; // URL of the blog post
+  const postTitle = property.title;
+  const postImage = property.image;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-NG", {
@@ -21,7 +31,7 @@ export default async function PropertyPage({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-20">
+    <div className="min-h-screen bg-gray-50 pt-20 pb-10">
       <main className="container mx-auto px-4 py-8">
         {/* Property Header */}
         <div className="mb-8">
@@ -30,8 +40,16 @@ export default async function PropertyPage({
           </h1>
           <div className="flex flex-wrap items-center gap-4 text-gray-600">
             <span>{property.location.category}</span>
-            <span>{property.location.city}</span>
-            <span>{property.location.address}</span>
+            <span className="flex gap-2 items-center">
+              {" "}
+              <FiHome className="text-gray-500" />
+              <span> {property.location.city}</span>
+            </span>
+            <span className="flex gap-2 items-center">
+              {" "}
+              <FiMapPin className="text-gray-500" />
+              <span> {property.location.address}</span>
+            </span>
 
             <span>•</span>
             <span className="font-semibold text-primary">
@@ -172,6 +190,14 @@ export default async function PropertyPage({
           </div>
         </div>
       </main>
+      {/* Social media sharing buttons */}
+      <div className="px-4">
+        <ShareButtons
+          postUrl={postUrl}
+          postTitle={postTitle}
+          postImage={postImage}
+        />
+      </div>
     </div>
   );
 }

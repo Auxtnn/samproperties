@@ -83,7 +83,7 @@ const Footer = () => {
       </div>
       <div className="fixed right-[1rem] bottom-10 border-2 rounded-full border-primary p-2 ">
         <Link href="https://wa.link/xmgy3b" target="_blank">
-          <IoLogoWhatsapp className="animate-pulse text-white rounded-full p-1 md:text-5xl text-6xl bg-primary" />
+          <IoLogoWhatsapp className=" text-primary rounded-full p-1 md:text-5xl text-6xl bg-white" />
         </Link>
       </div>
     </footer>

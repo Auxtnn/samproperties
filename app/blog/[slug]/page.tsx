@@ -6,15 +6,12 @@ import Image from "next/image";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import ShareButtons from "@/app/components/ShareButtonBlog";
 
-interface BlogProps {
+export default async function BlogPage({
+  params,
+}: {
   params: { slug: string };
-}
-
-const Blog: React.FC<BlogProps> = async ({ params }) => {
-  const { slug } = params;
-
-  // Fetch the specific post by slug
-  const post = await getPostBySlug(slug);
+}) {
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return <div>Post not found</div>;
@@ -32,7 +29,7 @@ const Blog: React.FC<BlogProps> = async ({ params }) => {
   const postImage = post.image;
 
   return (
-    <section className="max-w-screen-xl bg-white md:mt-20 md:py-20 py-10">
+    <section className="max-w-screen-xl bg-white mt-20 md:py-20 py-10">
       <div className="mx-auto lg:w-11/12 px-4">
         <Link
           href="/blog"
@@ -75,6 +72,4 @@ const Blog: React.FC<BlogProps> = async ({ params }) => {
       </div>
     </section>
   );
-};
-
-export default Blog;
+}

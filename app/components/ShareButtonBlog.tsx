@@ -27,38 +27,39 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({
   };
 
   return (
-    <div className="flex gap-4 mt-6">
+    <div className="flex gap-4 mt-6 flex-col md:flex-row ">
       <h3 className="text-lg font-bold">Share this post:</h3>
+      <div className="flex gap-4">
+        <FacebookShareButton
+          url={postUrl}
+          quote={postTitle}
+          hashtag="#RealEstateProperties"
+        >
+          <FaFacebook className="text-2xl text-primary hover:text-primary/20" />
+        </FacebookShareButton>
 
-      <FacebookShareButton
-        url={postUrl}
-        quote={postTitle}
-        hashtag="#RealEstateProperties"
-      >
-        <FaFacebook className="text-2xl text-primary hover:text-primary/20" />
-      </FacebookShareButton>
+        <TwitterShareButton
+          url={postUrl}
+          title={postTitle}
+          via="RealEstateProperties"
+          hashtags={["RealEstate", "Properties"]}
+        >
+          <FaTwitter className="text-2xl text-primary hover:text-primary/20" />
+        </TwitterShareButton>
 
-      <TwitterShareButton
-        url={postUrl}
-        title={postTitle}
-        via="RealEstateProperties"
-        hashtags={["RealEstate", "Properties"]}
-      >
-        <FaTwitter className="text-2xl text-primary hover:text-primary/20" />
-      </TwitterShareButton>
+        <LinkedinShareButton
+          url={postUrl}
+          title={postTitle}
+          summary={postTitle}
+          source={postImage}
+        >
+          <FaLinkedin className="text-2xl text-primary hover:text-primary/20" />
+        </LinkedinShareButton>
 
-      <LinkedinShareButton
-        url={postUrl}
-        title={postTitle}
-        summary={postTitle}
-        source={postImage}
-      >
-        <FaLinkedin className="text-2xl text-primary hover:text-primary/20" />
-      </LinkedinShareButton>
-
-      <WhatsappShareButton url={postUrl} title={postTitle}>
-        <FaWhatsapp className="text-2xl text-green-500 hover:text-green-600" />
-      </WhatsappShareButton>
+        <WhatsappShareButton url={postUrl} title={postTitle}>
+          <FaWhatsapp className="text-2xl text-green-500 hover:text-green-600" />
+        </WhatsappShareButton>
+      </div>
 
       <button
         onClick={handleCopyLink}

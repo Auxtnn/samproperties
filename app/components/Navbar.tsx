@@ -43,16 +43,23 @@ const Navbar = () => {
   }, []);
 
   const handleLinkClick = (e: any) => {
-    // Only handle hash links on mobile
-    if (window.innerWidth < 768 && e.currentTarget.href.includes("#")) {
-      e.preventDefault();
-      const id = e.currentTarget.href.split("#")[1];
+    const href = e.currentTarget.href;
+    const path = window.location.pathname;
+
+    // Only handle hash links when you're on the same page (ignores external links)
+    if (href.includes("#") && href.split("#")[0] === path) {
+      e.preventDefault(); // Prevent the default anchor link behavior
+
+      const id = href.split("#")[1];
       const element = document.getElementById(id);
+
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
-        setIsOpen(false);
       }
     }
+
+    // Close sidebar after link click
+    setIsOpen(false);
   };
 
   return (
@@ -178,7 +185,7 @@ const Navbar = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-primary text-white  border px-8 py-4 rounded-full border-primary hover:bg-white hover:text-black transition-all font-semibold"
+                className="bg-primary text-white mt-6  border px-8 py-4 rounded-full border-primary hover:bg-white hover:text-black transition-all font-semibold"
               >
                 Contact Us
               </motion.button>
