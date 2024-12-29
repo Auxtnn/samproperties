@@ -1,58 +1,133 @@
-import { useEffect, useState } from "react";
+"use client";
+
 import Image from "next/image";
-import HomeImg from "../../public/assets/Img-1.png";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-type Props = {};
+const HeroSection = () => {
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+      },
+    },
+  };
 
-const HeroSection = (props: Props) => {
-  const [email, setEmail] = useState<string>("");
+  const fadeInFromLeft = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.6,
+      },
+    },
+  };
 
-  const handleGetQuote = () => {
-    // Your logic for handling the quote goes here
+  const imageAnimation = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const staggerChildren = {
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   return (
-    <div
-      className="md:w-full rounded-2xl md:justify-center md:items-center md:flex md:h-[617px] md:mt-3 md:mb-8"
-      style={{
-        background: "linear-gradient(to right, rgb(193, 222, 232), rgb(251, 217, 185))",
-      }}
+    <motion.section
+      initial="hidden"
+      animate="visible"
+      variants={staggerChildren}
+      className="w-full px-4 py-8 md:py-0 bg-gradient-to-r from-[#C1DEE8] to-[#ededed]"
     >
-      {/*Caption & Button Section  */}
-      <div className="md:justify-center md:px-10 md:items-left md:flex md:flex-col w-[40%] md:left-16 md:h-[617px]  md:absolute">
-        <p className="font-CabinetGrotesk mb-2">Welcome to 3D Luxury</p>
-        <h2 className="text-7xl text-wrap font-CabinetGrotesk font-semibold">
-          Manage Your Property
-        </h2>
-        <p className="text-sm text-gray-500">
-          You will have everything nearby; supermarket, buses, <br></br>station,
-          the carmen neighborhood and more.
-        </p>
+      <div className="lg:w-11/12 mx-auto pt-20 pb-10">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-8">
+          {/* Content Section */}
+          <motion.div
+            variants={staggerChildren}
+            className="w-full md:w-1/2 space-y-6 text-center md:text-left"
+          >
+            <div className="space-y-4">
+              <motion.span
+                variants={fadeInFromLeft}
+                className="inline-block text-gray-800 text-xl font-medium"
+              >
+                Welcome to Samchukwu Properties
+              </motion.span>
 
-        {/* Email Subscription Button */}
-        <div className="md:my-2 w-[380px] bg-white rounded-3xl">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="p-3 rounded-3xl text-medium w-[70%] font-CabinetGrotesk outline-none"
-          />
-          <button className="text-medium font-CabinetGrotesk justify-center align-center bg-black h-full text-white w-[30%] rounded-e-3xl">
-            Get a Quote
-          </button>
+              <motion.h1
+                variants={fadeInFromLeft}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
+              >
+                Find Your Dream Home
+              </motion.h1>
+
+              <motion.p
+                variants={fadeInFromLeft}
+                className="text-gray-600 md:max-w-lg"
+              >
+                Discover the perfect property tailored to your needs. Whether
+                you're buying, renting, or investing, we make it effortless.
+              </motion.p>
+            </div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              variants={fadeIn}
+              className="flex gap-4 pt-4 md:justify-start justify-center md:items-start items-center"
+            >
+              <Link href="/listings">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-5 py-4 rounded-full bg-black text-white font-medium hover:bg-black/90 transition-all focus:outline-none focus:ring-2 focus:ring-black/20"
+                >
+                  Explore Listings
+                </motion.button>
+              </Link>
+
+              <Link href="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-primary border px-8 py-4 rounded-full border-primary hover:bg-white hover:text-black transition-all font-semibold"
+                >
+                  Contact Us
+                </motion.button>
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* Image Section */}
+          <motion.div variants={imageAnimation} className="w-full md:w-1/2">
+            <div className="relative aspect-[4/3] md:aspect-square w-full max-w-xl mx-auto">
+              <Image
+                src="/assets/Img-1.png"
+                alt="Luxury Property"
+                fill
+                className="object-cover rounded-2xl"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            </div>
+          </motion.div>
         </div>
       </div>
-
-      {/* Image Section */}
-      <Image
-        alt="Sample Housing"
-        src={HomeImg}
-        width={840}
-        height={650}
-        className="md:-mr-[34.5rem]"
-      />
-    </div>
+    </motion.section>
   );
 };
 

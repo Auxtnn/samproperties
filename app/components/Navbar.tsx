@@ -1,149 +1,192 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import SwitchThemeButton from "./SwitchThemeButton";
 import Link from "next/link";
+import Image from "next/image";
+import { BiMenu } from "react-icons/bi";
+import { FaTimes } from "react-icons/fa";
+import { BsChevronBarRight } from "react-icons/bs";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { motion } from "framer-motion";
 
-type Props = {};
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-const Navbar = (props: Props) => {
-  const [isDarkTheme, setIsDarkTheme] = useState(
-    window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  const menuItems = [
+    { href: "/#about", label: "About Us" },
+    { href: "/#services", label: "Services" },
+    { href: "/#whychooseus", label: "Why Choose Us" },
+    { href: "/#testimonials", label: "Testimonials" },
+    { href: "/blog", label: "Blog" },
+    { href: "/listings", label: "Listings" },
+  ];
 
   useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
     const handleResize = () => {
       if (window.innerWidth >= 768) {
-        closeMenu();
+        setIsOpen(false);
       }
     };
 
+    window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
+  const handleLinkClick = (e: any) => {
+    // Only handle hash links on mobile
+    if (window.innerWidth < 768 && e.currentTarget.href.includes("#")) {
+      e.preventDefault();
+      const id = e.currentTarget.href.split("#")[1];
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        setIsOpen(false);
+      }
+    }
+  };
+
   return (
-    <div
-      className={`${
-        isMenuOpen
-          ? "flex md:flex-row  items-center md:px-8 h-[80px] navbar rounded-full"
-          : "flex md:flex-row items-center md:justify-between md:px-8 h-[80px] bg-[#fafafa] rounded-full md:mb-2 text-nowrap"
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-white shadow-lg py-4" : "bg-transparent py-4 pb-10"
       }`}
     >
-      {/* Logo */}
-      <span className="whitespace-nowrap font-CabinetGrotesk md:text-2xl mb-4 md:mb-0 ">
-        Luxville Apartments
-      </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex-shrink-0 transition-transform duration-300 hover:scale-105">
+            <Link href="/">
+              <Image
+                alt="logo"
+                src="/assets/bg.png"
+                width={50}
+                height={50}
+                className="rounded-full"
+                unoptimized
+              />
+            </Link>
+          </div>
 
-      {/* Menu Icon or Quit Icon based on menu state */}
-      <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
-        {isMenuOpen ? (
-          // Quit Icon
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="w-6 h-6 text-gray-500 absolute right-6 top-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        ) : (
-          // Menu Icon
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="w-6 h-6 text-gray-500"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
-        )}
+          <div className="flex space-x-4">
+            <a
+              href="https://www.facebook.com/profile.php?id=100082877305169&mibextid=ZbWKwL"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary transition-colors duration-300"
+            >
+              <FaFacebookF />
+            </a>
+
+            <a
+              href="https://www.instagram.com/chukwunonsoagbom?igsh=MWRsMG8wc2NvdTQ3ZA=="
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary transition-colors duration-300"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://youtube.com/@samchukwuproperties?si=5EnCJvTCAGcFVr5K"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary transition-colors duration-300"
+            >
+              <FaYoutube />
+            </a>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-gray-600 hover:text-primary transition-all duration-300 relative group py-2"
+              >
+                {item.label}
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+              </Link>
+            ))}
+            <Link href="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-primary text-white border px-8 py-4 rounded-full border-primary hover:bg-white hover:text-black transition-all font-semibold"
+              >
+                Contact Us
+              </motion.button>
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 rounded-md text-primary hover:text-gray-900 hover:bg-gray-100 focus:outline-none transition-colors duration-300"
+            >
+              {isOpen ? (
+                <FaTimes className="h-6 w-6" />
+              ) : (
+                <BiMenu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Menu Items */}
-      <ul
-        className={`${
-          isMenuOpen
-            ? "flex flex-col z-10 h-screen w-full items-center gap-4 md:flex-row md:justify-center md:absolute md:inset-0 md:bg-white md:text-black"
-            : "hidden md:flex md:justify-between md:items-center bg-white md:h-[50px] md:px-8  md:rounded-full w-[571px] md:gap-6 md:ml-12"
+      {/* Mobile Navigation */}
+      <div
+        className={`fixed inset-y-0 right-0 w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <li>
-          <Link href={"/#about"} onClick={closeMenu}>
-            About Us
-          </Link>
-        </li>
-        <li>
-          <Link href={"/#projects"} onClick={closeMenu}>
-            Projects
-          </Link>
-        </li>
-        <li>
-          <Link href={"/#agents"} onClick={closeMenu}>
-            Agents
-          </Link>
-        </li>
-        <li>
-          <Link href={"/#services"} onClick={closeMenu}>
-            Services
-          </Link>
-        </li>
-        <li>
-          <Link href={"/#listings"} onClick={closeMenu}>
-            Listings
-          </Link>
-        </li>
+        <div className="flex flex-col h-full">
+          <div className="p-4">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none float-right"
+            >
+              <FaTimes className="h-6 w-6" />
+            </button>
+          </div>
+          <div className="px-4 py-6 space-y-6">
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={handleLinkClick}
+                className="block text-gray-600 hover:text-primary transition-colors duration-300 group"
+              >
+                <div className="flex items-center">
+                  <span>{item.label}</span>
+                  <BsChevronBarRight className="h-4 w-4 ml-2 opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all duration-300" />
+                </div>
+              </Link>
+            ))}
 
-        <li>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-            />
-          </svg>
-        </li>
-      </ul>
-
-      <span className={`${isMenuOpen ? "hidden" : "md:ml-32 md:mr-28"}`}>
-        <Link href={"/#others"}>Other Services</Link>
-      </span>
-      
-      <span className={`${isMenuOpen ? "hidden" : "md:bg-white md:py-3 md:px-6 md:h-[60px] items-center cursor-pointer justify-center flex md:-mr-4 rounded-full border "}`}>
-        <Link href={"/#contact"}>Contact Us</Link>
-      </span>
-    </div>
+            <Link href="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-primary text-white  border px-8 py-4 rounded-full border-primary hover:bg-white hover:text-black transition-all font-semibold"
+              >
+                Contact Us
+              </motion.button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 

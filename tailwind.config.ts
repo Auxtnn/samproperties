@@ -14,8 +14,11 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily: {
-        CabinetGrotesk: ["CabinetGrotesk", "sans-serif"], 
-        Satoshi: ["Satoshi", "sans-serif"], 
+        CabinetGrotesk: ["CabinetGrotesk", "sans-serif"],
+        Satoshi: ["Satoshi", "sans-serif"],
+      },
+      colors: {
+        primary: "#2596be",
       },
     },
   },

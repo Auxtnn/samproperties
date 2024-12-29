@@ -1,24 +1,24 @@
 import React from "react";
-import Image from "next/image";
+import { FaSearch, FaCalendarCheck, FaHandshake } from "react-icons/fa"; // React Icons
 
 type Props = {
   color: string;
   title: string;
-  src: string;
-  msg: string
+  icon: React.ReactNode; // Changing from src to icon for React Icons
+  msg: string;
 };
 
-const RegisterItemCard = (props: Props) => {
+const RegisterItemCard = ({ title, icon, msg }: Props) => {
   return (
-    <div className="md:w-[330px] md:h-[205px] bg-[#] rounded-lg grid grid-row-3 justify-center items-center cursor-pointer hover:scale-[0.98] border">
-        <Image 
-        width={50}
-        height={50}
-        src={props.src} 
-        alt={props.title} 
-        className={`color-[${props.color}] justify-self-center`}/>
-        <p className="text-2xl font-medium text-center"> {props.title}</p>
-        <p className="text-center">{props.msg}</p>
+    <div className="flex flex-col justify-center items-center p-6 border rounded-lg shadow hover:scale-95 transition-transform duration-300 ease-in-out">
+      <div className="mb-4 flex justify-center items-center text-center">
+        <div className="p-4 rounded-full">{icon}</div>
+      </div>
+
+      <p className="text-2xl font-semibold text-center mb-2 text-gray-800">
+        {title}
+      </p>
+      <p className="text-center text-gray-600">{msg}</p>
     </div>
   );
 };

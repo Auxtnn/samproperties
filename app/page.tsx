@@ -1,38 +1,41 @@
-"use client";
+import React from "react";
 
 import EstateBrokerage from "./components/EstateBrokerage";
 import HeroSection from "./components/HeroSection";
-import Navbar from "./components/Navbar";
 import Projects from "./components/Projects";
 import RegisteringMethods from "./components/RegisteringMethods";
-import SwitchThemeButton from "./components/SwitchThemeButton";
-import NewsletterSection from "./components/NewsletterSection";
-import React, { useState } from "react";
-import PropertyListing from "./components/PropertyListing";
-import Advertisement from "./components/Advertisement";
-import Footer from "./components/Footer";
-import PostFooterDevMode from "./components/PostFooterDevMode";
+import Features from "./components/Services";
+import WhatWeDoSection from "./components/WhyChooseUs";
+import { TestimonialSection } from "./components/Testimonial";
+import BlogPage from "./components/BlogHome";
+import { getPosts } from "@/sanity/lib/query";
+import { getProperties } from "@/sanity/lib/query";
 
-export default function Home() {
-  const [isDarkTheme, setIsDarkTheme] = useState(
-    window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
+export default async function Home() {
+  const posts = (await getPosts("post")) || [];
+  const properties = (await getProperties("property")) || [];
   return (
-    <main className={isDarkTheme ? "dark" : "light"}>
-      <div className="px-6 py-3 md:px-16 md:py-5">
-        <Navbar />
+    <main>
+      <div className="">
         <HeroSection />
         <RegisteringMethods />
-        <Projects />
         <EstateBrokerage />
-        <NewsletterSection />
-        <PropertyListing />
-        <Advertisement />
-        <Footer />
+        <Features />
+        <WhatWeDoSection />
+        {/* <AdvantagesSection /> */}
+        <TestimonialSection />
+        {/* <PropertyListing /> */}
+
+        <Projects properties={properties} />
+
+        <BlogPage posts={posts} />
+
+        {/* <NewsletterSection /> */}
+
+        {/* <Advertisement /> */}
 
         {/* Developers Details */}
-        <PostFooterDevMode />
+        {/* <PostFooterDevMode /> */}
       </div>
     </main>
   );
