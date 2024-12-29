@@ -1,10 +1,10 @@
 import React from "react";
 import { FaInstagram, FaYoutube, FaFacebookF } from "react-icons/fa";
 import Image from "next/image";
+import { IoLogoWhatsapp } from "react-icons/io";
+import Link from "next/link";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <footer className="w-full pt-12 px-6  bg-gradient-to-r from-[#C1DEE8] to-[#ededed] text-gray-800">
       <div className="lg:w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -80,6 +80,11 @@ const Footer = (props: Props) => {
           &copy; {new Date().getFullYear()} Samchukwu Properties. All Rights
           Reserved.
         </p>
+      </div>
+      <div className="fixed right-[1rem] bottom-10 border-2 rounded-full border-primary p-2 ">
+        <Link href="https://wa.link/xmgy3b" target="_blank">
+          <IoLogoWhatsapp className="animate-pulse text-white rounded-full p-1 md:text-5xl text-6xl bg-primary" />
+        </Link>
       </div>
     </footer>
   );
