@@ -27,10 +27,10 @@ const EstateBrokerage = () => {
             <span className="text-primary">Samchukwu Properties</span>
           </h2>
           <p className="text-gray-600 leading-7">
-            Whether you're buying, selling, renting, or leasing, we provide
-            comprehensive services tailored to your unique needs. With our
-            extensive market knowledge and dedication, finding your dream home
-            or investment property has never been easier.
+            Whether you're buying, selling, renting, or leasing, we offer
+            tailored services to meet your unique needs. With our deep market
+            expertise and unwavering dedication, we make finding your dream home
+            or ideal investment property simple and stress-free.
           </p>
           <p className="text-gray-600 leading-7">
             Let us help you explore a wide range of properties, from stunning

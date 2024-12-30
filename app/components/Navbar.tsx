@@ -124,7 +124,7 @@ const Navbar = () => {
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
               </Link>
             ))}
-            <Link href="/contact">
+            <Link href="https://wa.link/4u3ppa" target="_blank">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -181,7 +181,7 @@ const Navbar = () => {
               </Link>
             ))}
 
-            <Link href="/contact">
+            <Link href="https://wa.link/4u3ppa" target="_blank">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
