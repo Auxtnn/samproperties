@@ -22,20 +22,12 @@ export default async function Home() {
         <EstateBrokerage />
         <Features />
         <WhatWeDoSection />
-        {/* <AdvantagesSection /> */}
+
         <TestimonialSection />
-        {/* <PropertyListing /> */}
 
         <Projects properties={properties} />
 
         <BlogPage posts={posts} />
-
-        {/* <NewsletterSection /> */}
-
-        {/* <Advertisement /> */}
-
-        {/* Developers Details */}
-        {/* <PostFooterDevMode /> */}
       </div>
     </main>
   );

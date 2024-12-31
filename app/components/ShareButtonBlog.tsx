@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import { FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaWhatsapp } from "react-icons/fa";
 import {
   FacebookShareButton,
   TwitterShareButton,
-  LinkedinShareButton,
   WhatsappShareButton,
 } from "react-share";
 import toast from "react-hot-toast";
@@ -14,12 +13,14 @@ interface ShareButtonsProps {
   postUrl: string;
   postTitle: string;
   postImage: string;
+  
 }
 
 const ShareButtons: React.FC<ShareButtonsProps> = ({
   postUrl,
   postTitle,
   postImage,
+
 }) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(postUrl);
@@ -34,6 +35,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({
           url={postUrl}
           quote={postTitle}
           hashtag="#RealEstateProperties"
+          media={postImage}
         >
           <FaFacebook className="text-2xl text-primary hover:text-primary/20" />
         </FacebookShareButton>
@@ -46,15 +48,6 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({
         >
           <FaTwitter className="text-2xl text-primary hover:text-primary/20" />
         </TwitterShareButton>
-
-        <LinkedinShareButton
-          url={postUrl}
-          title={postTitle}
-          summary={postTitle}
-          source={postImage}
-        >
-          <FaLinkedin className="text-2xl text-primary hover:text-primary/20" />
-        </LinkedinShareButton>
 
         <WhatsappShareButton url={postUrl} title={postTitle}>
           <FaWhatsapp className="text-2xl text-green-500 hover:text-green-600" />

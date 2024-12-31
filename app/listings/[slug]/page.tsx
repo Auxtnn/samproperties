@@ -5,7 +5,55 @@ import {
 } from "../../components/IndividualListing";
 import { getPropertyBySlug } from "@/sanity/lib/query";
 import ShareButtons from "@/app/components/ShareButtonBlog";
-import { FiClock, FiInbox, FiMapPin, FiHome } from "react-icons/fi";
+import { FiMapPin, FiHome } from "react-icons/fi";
+
+import { Metadata } from "next";
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const property = await getPropertyBySlug(params.slug);
+
+  const absoluteImageUrls = property.images
+    .map((image) => {
+      // Access the url property of each image object
+      const imageUrl = image.url;
+
+      // Ensure imageUrl is a string before calling startsWith
+      if (typeof imageUrl === "string") {
+        return imageUrl.startsWith("http")
+          ? imageUrl
+          : `https://samchukwuproperties.com${imageUrl}`;
+      } else {
+        console.warn("Invalid image format:", image); // Log invalid formats
+        return null; // Or handle it as needed
+      }
+    })
+    .filter((url) => url !== null); // Remove null values
+
+  const description = property.description
+    .map((block: any) =>
+      block.children.map((child: any) => child.text).join("")
+    )
+    .join(" ");
+
+  return {
+    title: property.title,
+    description: description,
+    openGraph: {
+      type: "article",
+      title: property.title,
+      description: description,
+      url: `https://samchukwuproperties.com/properties/${property.currentSlug}`,
+      siteName: "Samchukwu Properties",
+      images: absoluteImageUrls.map((url) => ({
+        url,
+        width: 1200,
+        height: 630,
+        alt: property.title,
+      })),
+
+      authors: ["Samchukwu Properties"],
+    },
+  };
+}
 
 export default async function PropertyPage({
   params,
@@ -18,7 +66,7 @@ export default async function PropertyPage({
     return <div className="text-center">Property not found</div>;
   }
 
-  const postUrl = `samchukwuproperties.com/listings/${property.currentSlug}`; // URL of the blog post
+  const postUrl = `https://samchukwuproperties.com/listings/${property.currentSlug}`; // URL of the blog post
   const postTitle = property.title;
   const postImage = property.image;
 
@@ -185,7 +233,10 @@ export default async function PropertyPage({
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <AgentContact />
+              <AgentContact
+                propertyTitle={property.title}
+                propertyAddress={property.location.address}
+              />
             </div>
           </div>
         </div>

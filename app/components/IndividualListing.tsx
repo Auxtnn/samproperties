@@ -7,6 +7,7 @@ import type { PropertyImage } from "../types";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import Link from "next/link";
 
 type Props = {
   images: PropertyImage[];
@@ -40,7 +41,14 @@ export const PropertyImageCarousel = ({ images }: Props) => {
   );
 };
 
-export const AgentContact = () => {
+export const AgentContact = ({ propertyTitle, propertyAddress }) => {
+  // WhatsApp link with pre-filled message
+  const agentPhone = "+2347035214886"; // Agent's phone number in international format
+  const whatsappMessage = encodeURIComponent(
+    `Hello, I am interested in the property: ${propertyTitle} located at ${propertyAddress}`
+  );
+  const whatsappUrl = `https://wa.me/${agentPhone}?text=${whatsappMessage}`;
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex items-center space-x-4 mb-4">
@@ -59,17 +67,16 @@ export const AgentContact = () => {
         </div>
       </div>
       <div className="space-y-3">
-        <button
-          className="w-full bg-primary text-white py-3 rounded-md hover:bg-primary/80 transition-colors duration-300"
-          onClick={() => (window.location.href = "/contact")}
-        >
-          Contact Agent
-        </button>
+        <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+          <button className="w-full bg-primary text-white py-3 rounded-md hover:bg-primary/80 transition-colors duration-300">
+            Contact Agent via WhatsApp
+          </button>
+        </Link>
         <a
-          href="tel:+2347035214886"
+          href={`tel:${agentPhone}`}
           className="block w-full text-center bg-gray-800 text-white py-3 rounded-md hover:bg-gray-700 transition-colors duration-300"
         >
-          Call 07035214886
+          Call {agentPhone}
         </a>
         <a
           href="mailto:samchukwuproperties@gmail.com"

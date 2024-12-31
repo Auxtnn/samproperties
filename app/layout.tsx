@@ -11,6 +11,14 @@ export const metadata: Metadata = {
   title: "Samchukwu Properties",
   description:
     "Find your ideal property with Samchukwu Properties. We offer prime land for sale and affordable apartment rentals. Start your property journey with us today.",
+  openGraph: {
+    type: "website",
+    title: "Samchukwu Properties",
+    description:
+      "Find your ideal property with Samchukwu Properties. We offer prime land for sale and affordable apartment rentals.",
+    url: "https://samchukwuproperties.com",
+    siteName: "Samchukwu Properties",
+  },
 };
 
 export default function RootLayout({

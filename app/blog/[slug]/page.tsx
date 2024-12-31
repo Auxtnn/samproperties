@@ -6,6 +6,39 @@ import Image from "next/image";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import ShareButtons from "@/app/components/ShareButtonBlog";
 
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await getPostBySlug(params.slug);
+  const absoluteImageUrl = post.image.startsWith("http")
+    ? post.image
+    : `https://samchukwuproperties.com${post.image}`;
+
+  const description = post.body[0]?.children[0]?.text || "";
+
+  return {
+    title: post.title,
+    description: description,
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: description,
+      url: `https://samchukwuproperties.com/blog/${post.currentSlug}`,
+      siteName: "Samchukwu Properties",
+      images: [
+        {
+          url: absoluteImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      publishedTime: post.publishedAt,
+      authors: ["Samchukwu Properties"],
+    },
+  };
+}
+
 export default async function BlogPage({
   params,
 }: {
@@ -24,8 +57,9 @@ export default async function BlogPage({
       day: "numeric",
     });
   };
-  const postUrl = `samchukwuproperties.com/blog/${post.currentSlug}`; // URL of the blog post
+  const postUrl = `https://samchukwuproperties.com/blog/${post.currentSlug}`; // URL of the blog post
   const postTitle = post.title;
+
   const postImage = post.image;
 
   return (
