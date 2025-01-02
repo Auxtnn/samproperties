@@ -161,6 +161,15 @@ export const propertyType = defineType({
       of: [defineArrayMember({ type: "string" })],
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "videoLink",
+      title: "Property Link",
+      type: "url",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["http", "https"],
+        }),
+    }),
   ],
   preview: {
     select: {

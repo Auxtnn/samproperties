@@ -3,36 +3,66 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
-import type { PropertyImage } from "../types";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Link from "next/link";
 
-type Props = {
-  images: PropertyImage[];
+interface Media {
+  id: string;
+  url: string;
+  type: "image" | "video";
+}
+
+interface Props {
+  media: Media[];
+}
+
+const getEmbedUrl = (url: string, type: "image" | "video") => {
+  if (type === "video") {
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      const videoId =
+        new URL(url).searchParams.get("v") || url.split("/").pop();
+      return `https://www.youtube.com/embed/${videoId}`;
+    } else if (url.includes("facebook.com")) {
+      return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}`;
+    }
+  }
+  return url; // For images, return the original URL
 };
 
-export const PropertyImageCarousel = ({ images }: Props) => {
+export const PropertyImageCarousel = ({ media }: Props) => {
   return (
     <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={[Navigation, Pagination]}
         navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
+        // autoplay={{ delay: 5000 }}
         className="h-full rounded-lg"
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={`${image.id}-${index}`}>
+        {media.map((item, index) => (
+          <SwiperSlide key={`${item.id}-${index}`}>
             <div className="relative w-full h-full">
-              <Image
-                src={image.url}
-                alt={`Property image ${index + 1}`}
-                fill
-                className="object-cover"
-                priority={index === 0} // Only prioritize loading the first image
-              />
+              {item.type === "image" ? (
+                <Image
+                  src={item.url}
+                  alt={`Property media ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  priority={index === 0} // Only prioritize loading the first image
+                />
+              ) : (
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={getEmbedUrl(item.url, item.type)}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ border: "none", overflow: "hidden" }}
+                ></iframe>
+              )}
             </div>
           </SwiperSlide>
         ))}

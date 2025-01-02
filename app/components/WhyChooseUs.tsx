@@ -2,12 +2,6 @@ import React from "react";
 import ServiceCard from "./ServiceCard";
 import { ServiceData } from "../types";
 import {
-  FaHandsHelping,
-  FaGavel,
-  FaPeopleCarry,
-  FaHeartbeat,
-} from "react-icons/fa";
-import {
   FaHome,
   FaShieldAlt,
   FaCrown,

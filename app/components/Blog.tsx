@@ -1,16 +1,24 @@
-// blog.tsx
+// components/Blog.tsx
 import React from "react";
 import { FiClock, FiInbox } from "react-icons/fi";
 import Link from "next/link";
+import Image from "next/image";
 
 import type { postsType } from "../types";
-import Image from "next/image";
 
 interface BlogPageProps {
   posts: postsType[];
+  loadMorePosts: () => void;
+  loading: boolean;
+  hasMorePosts: boolean;
 }
 
-const BlogMainPage: React.FC<BlogPageProps> = ({ posts }) => {
+const BlogMainPage: React.FC<BlogPageProps> = ({
+  posts,
+  loadMorePosts,
+  loading,
+  hasMorePosts,
+}) => {
   const formatDate = (date: string) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -22,8 +30,16 @@ const BlogMainPage: React.FC<BlogPageProps> = ({ posts }) => {
 
   const truncateBody = (body: string, maxLength = 145) => {
     if (!body || body.length <= maxLength) return body;
-    return body.slice(0, maxLength).concat("..."); // Truncate and add ellipsis
+    return body.slice(0, maxLength).concat("...");
   };
+
+  if (loading) {
+    return (
+      <div className="text-center flex justify-center h-screen items-center">
+        Loading Posts...
+      </div>
+    );
+  }
 
   return (
     <section
@@ -40,7 +56,7 @@ const BlogMainPage: React.FC<BlogPageProps> = ({ posts }) => {
             {posts.map((post: any) => (
               <div
                 key={post._id}
-                className="rounded  overflow-hidden shadow-lg flex flex-col h-full"
+                className="rounded overflow-hidden shadow-lg flex flex-col h-full"
               >
                 {/* Image */}
                 <div className="relative h-48 w-full">
@@ -85,6 +101,17 @@ const BlogMainPage: React.FC<BlogPageProps> = ({ posts }) => {
               </div>
             ))}
           </div>
+          {hasMorePosts && (
+            <div className="flex justify-center mt-10">
+              <button
+                onClick={loadMorePosts}
+                disabled={loading}
+                className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark disabled:bg-gray-400"
+              >
+                {loading ? "Loading..." : "Load More"}
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center text-gray-800 text-center space-y-4">

@@ -11,22 +11,9 @@ import { Metadata } from "next";
 export async function generateMetadata({ params }): Promise<Metadata> {
   const property = await getPropertyBySlug(params.slug);
 
-  const absoluteImageUrls = property.images
-    .map((image) => {
-      // Access the url property of each image object
-      const imageUrl = image.url;
-
-      // Ensure imageUrl is a string before calling startsWith
-      if (typeof imageUrl === "string") {
-        return imageUrl.startsWith("http")
-          ? imageUrl
-          : `https://samchukwuproperties.com${imageUrl}`;
-      } else {
-        console.warn("Invalid image format:", image); // Log invalid formats
-        return null; // Or handle it as needed
-      }
-    })
-    .filter((url) => url !== null); // Remove null values
+  const absoluteImageUrl = property.image.startsWith("http")
+    ? property.image
+    : `https://samchukwuproperties.com${property.image}`;
 
   const description = property.description
     .map((block: any) =>
@@ -43,12 +30,14 @@ export async function generateMetadata({ params }): Promise<Metadata> {
       description: description,
       url: `https://samchukwuproperties.com/properties/${property.currentSlug}`,
       siteName: "Samchukwu Properties",
-      images: absoluteImageUrls.map((url) => ({
-        url,
-        width: 1200,
-        height: 630,
-        alt: property.title,
-      })),
+      images: [
+        {
+          url: absoluteImageUrl,
+          width: 1200,
+          height: 630,
+          alt: property.title,
+        },
+      ],
 
       authors: ["Samchukwu Properties"],
     },
@@ -77,6 +66,19 @@ export default async function PropertyPage({
       maximumFractionDigits: 0,
     }).format(price);
   };
+
+  const media = [
+    ...(Array.isArray(property.images)
+      ? property.images.map((image) => ({
+          type: "image",
+          url: image.url,
+          id: image.id,
+        }))
+      : []),
+    ...(property.videoLink
+      ? [{ type: "video", url: property.videoLink, id: "video" }]
+      : []),
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20 pb-10">
@@ -144,8 +146,8 @@ export default async function PropertyPage({
           </div>
         </div>
 
-        {/* Image Carousel */}
-        <PropertyImageCarousel images={property.images} />
+        {/* Image and Video Carousel */}
+        <PropertyImageCarousel media={media} />
 
         {/* Property Details Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
